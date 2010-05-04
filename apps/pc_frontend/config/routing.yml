@@ -1,0 +1,4 @@
+mtviewer:
+  class: opMTViewerPluginFrontendRouteCollection
+  options: { name: mtviewer }
+

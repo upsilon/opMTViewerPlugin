@@ -1,0 +1,13 @@
+homeSuccess:
+  customize:
+    mtviewerTopicList:
+      template: [mtviewer_topic, topicList]
+      parts: [communityHome]
+      target: [lastRow]
+      is_component: true
+
+    mtviewerEventList:
+      template: [mtviewer_event, eventList]
+      parts: [communityHome]
+      target: [lastRow]
+      is_component: true

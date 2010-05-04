@@ -1,0 +1,174 @@
+options:
+  charset: utf8
+
+Op2Member:
+  columns:
+    id: { type: integer(4), primary: true, autoincrement: true }
+    member_id: { type: integer(4) }
+    number: { type: integer(4) }
+    name: { type: string, notnull: true }
+  relations:
+    Member:
+      onDelete: set null
+
+Op2Entry:
+  columns:
+    id: { type: integer(4), primary: true, autoincrement: true }
+    op2_member_id: { type: integer(4), notnull: true }
+    number: { type: intger(4) }
+    title: { type: string, notnull: true }
+    body: { type: string, notnull: true }
+    has_images: { type: boolean, notnull: true, default: false }
+    created_at: { type: timestamp, notnull: true }
+  relations:
+    Op2Member:
+      onDelete: cascade
+
+Op2Comment:
+  columns:
+    id: { type: integer(4), primary: true, autoincrement: true }
+    op2_member_id: { type: integer(4) }
+    number: { type: integer(4), notnull: true }
+    body: { type: string, notnull: true }
+    has_images: { type: boolean, notnull: true, default: false }
+    created_at: { type: timestamp, notnull: true }
+  relations:
+    Op2Member:
+      onDelete: set null
+
+Op2Image:
+  columns:
+    id: { type: integer(4), primary: true, autoincrement: true }
+    file_id: { type: integer(4) }
+    orig_url : { type: string, notnull: true }
+    number: { type: integer(4), notnull: true }
+  relations:
+    File:
+      onDelete: set null
+
+
+Op2Diary:
+  inheritance:
+    type: concrete
+    extends: Op2Entry
+  columns:
+    public_flag: { type: integer(1), notnull: true, default: 1 } 
+  relations:
+    Op2DiaryCategory:
+      refClass: Op2DiaryCategoryDiary
+
+Op2DiaryCategory:
+  columns:
+    id: { type: integer(4), primary: true, autoincrement: true }
+    op2_member_id: { type: integer(4), notnull: true }
+    name: { type: string, notnull: true }
+  relations:
+    Op2Member:
+      onDelete: cascade
+
+Op2DiaryCategoryDiary:
+  columns:
+    op2_diary_id: { type: integer(4), primary: true }
+    op2_diary_category_id: { type: integer(4), primary: true }
+  relations:
+    Op2Diary:
+      onDelete: cascade
+    Op2DiaryCategory:
+      onDelete: cascade
+
+Op2DiaryImage:
+  inheritance:
+    type: concrete
+    extends: Op2Image
+  columns:
+    op2_diary_id: { type: integer(4), notnull: true }
+  relations:
+    Op2Diary:
+      onDelete: cascade
+
+Op2DiaryComment:
+  inheritance:
+    type: concrete
+    extends: Op2Comment
+  columns:
+    op2_diary_id: { type: integer(4), notnull: true }
+  relations:
+    Op2Diary:
+      onDelete: cascade
+
+Op2DiaryCommentImage:
+  inheritance:
+    type: concrete
+    extends: Op2Image
+  columns:
+    op2_diary_comment_id: { type: integer(4), notnull: true }
+  relations:
+    Op2DiaryComment:
+      onDelete: cascade
+
+
+Op2Community:
+  columns:
+    id: { type: integer(4), primary: true, autoincrement: true }
+    community_id: { type: integer(4) }
+    number: { type: integer(4) }
+    name: { type: string, notnull: true }
+  relations:
+    Community:
+      onDelete: set null
+
+Op2CommunityTopic:
+  inheritance:
+    type: concrete
+    extends: Op2Entry
+  columns:
+    op2_community_id: { type: integer(4), notnull: true }
+  relations:
+    Op2Community:
+      onDelete: cascade
+
+Op2CommunityTopicComment:
+  inheritance:
+    type: concrete
+    extends: Op2Comment
+  columns:
+    op2_community_topic_id: { type: integer(4), notnull: true }
+  relations:
+    Op2CommunityTopic:
+      onDelete: cascade
+
+Op2CommunityEvent:
+  inheritance:
+    type: concrete
+    extends: Op2Entry
+  columns:
+    op2_community_id: { type: integer(4), notnull: true }
+    open_date: { type: timestamp, notnull: true }
+    open_date_comment: { type: string, notnull: true }
+    area: { type: string, notnull: true }
+    capacity: { type: integer(4) }
+  relations:
+    Op2Community:
+      onDelete: cascade
+
+Op2CommunityEventComment:
+  inheritance:
+    type: concrete
+    extends: Op2Comment
+  columns:
+    op2_community_event_id: { type: integer(4), notnull: true }
+  relations:
+    Op2CommunityEvent:
+      onDelete: cascade
+
+Op2CommunityEventMember:
+  columns:
+    id: { type: integer(4), primary: true, autoincrement: true }
+    op2_community_event_id: { type: integer(4), notnull: true }
+    op2_member_id: { type: integer(4), notnull: true }
+  relations:
+    Op2Member:
+      onDelete: cascade
+    Op2CommunityEvent:
+      onDelete: cascade
+

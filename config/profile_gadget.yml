@@ -1,0 +1,20 @@
+mtviewerDiaryList:
+  caption:
+    ja_JP: "過去の日記"
+  description:
+    ja_JP: "メンバーがMT形式でインポートした日記を一覧表示します。"
+  component: [mtviewer_diary, diaryList]
+  config:
+    max:
+      Name:      "max"
+      Caption:   "最大表示件数"
+      FormType:  "select"
+      ValueType:  "int"
+      IsRequired: true
+      Default:    5
+      Choices:
+        1: 1
+        3: 3
+        5: 5
+        7: 7
+        10: 10

@@ -1,0 +1,16 @@
+Navigation:
+  community_navigation_mttopic:
+    type: "community"
+    uri: "@mtviewer_community_topic"
+    sort_order: 7
+    Translation:
+      ja_JP:
+        caption: "過去のトピック"
+
+  community_navigation_mtevent:
+    type: "community"
+    uri: "@mtviewer_community_event"
+    sort_order: 8
+    Translation:
+      ja_JP:
+        caption: "過去のイベント"

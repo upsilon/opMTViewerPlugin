@@ -1,0 +1,32 @@
+.mtviewerTopic ul.articleList,
+.mtviewerEvent ul.articleList {
+  display: table;
+}
+
+.mtviewerTopic ul.articleList li,
+.mtviewerEvent ul.articleList li {
+  display: table-row;
+  padding-bottom: 5px;
+}
+
+.mtviewerTopic ul.articleList li span,
+.mtviewerEvent ul.articleList li span {
+  display: table-cell;
+}
+
+.mtviewerTopic ul.articleList li span.date,
+.mtviewerEvent ul.articleList li span.date {
+  background: transparent url(../../images/icon_2.gif) no-repeat scroll 3px 0.4em;
+  padding-left: 10px;
+  padding-right: 5px;
+  white-space: nowrap;
+}
+
+div.moreInfo {
+  text-align: right;
+}
+
+div.moreInfo ul.moreInfo {
+  display: inline-block;
+}
+
