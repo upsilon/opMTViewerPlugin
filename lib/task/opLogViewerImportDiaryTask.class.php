@@ -8,8 +8,8 @@ class opMTViewerImportDiaryTask extends sfDoctrineBaseTask
     $this->name = 'import-diary';
     $this->briefDescription = 'Import diaries from a Movable Type (MT) format file';
 
-    $this->addArguments(array(
-      new sfCommandArgument('filename', sfCommandArgument::REQUIRED, 'filename'),
+    $this->addOptions(array(
+      new sfCommandOption('filename', null, sfCommandOption::PARAMETER_REQUIRED),
     ));
   }
 
@@ -17,50 +17,16 @@ class opMTViewerImportDiaryTask extends sfDoctrineBaseTask
   {
     $databaseManager = new sfDatabaseManager($this->configuration);
 
-    $fh = fopen($arguments['filename'], 'r');
-
-    if (!$fh)
-    {
-      return;
-    }
-
     $conn = Doctrine_Manager::getInstance()->getCurrentConnection();
     $conn->beginTransaction();
     try
     {
-      $parser = new opMTFormatParser($fh);
-      foreach ($parser as $entry)
+      if (isset($options['filename']))
       {
-        $this->logSection('import', 'importing '.$entry['TITLE']);
-
-        $diary = new Op2Diary();
-        $diary->setFromArray($entry);
-
-        if ($entry['TAGS'])
+        if ($fh = fopen($options['filename'], 'r'))
         {
-          foreach (explode(',', $entry['TAGS']) as $category)
-          {
-            $cat = new Op2DiaryCategory();
-            $cat->name = $category;
-            $cat->Op2Member = $diary->Op2Member;
-
-            $diary->Op2DiaryCategory[] = $cat;
-          }
-        }
-        $diary->save($conn);
-
-        if ($entry['COMMENT'])
-        {
-          $num = 1;
-          foreach ($entry['COMMENT'] as $c)
-          {
-            $comment = new Op2DiaryComment();
-            $comment->setFromArray($c);
-            $comment->number = $num++;
-            $comment->Op2Diary = $diary;
-
-            $comment->save($conn);
-          }
+          $this->parse($fh, $conn);
+          fclose($fh);
         }
       }
 
@@ -71,8 +37,50 @@ class opMTViewerImportDiaryTask extends sfDoctrineBaseTask
       $conn->rollBack();
       throw $e;
     }
+  }
 
-    fclose($fh);
+  protected function parse($file, $conn, Member $member = null)
+  {
+    $parser = new opMTFormatParser($file);
+    foreach ($parser as $entry)
+    {
+      $this->logSection('import', 'importing '.$entry['TITLE']);
+
+      $diary = new Op2Diary();
+      $diary->setFromArray($entry);
+
+      if (!is_null($member))
+      {
+        $diary->Op2Member->Member = $member;
+      }
+
+      if ($entry['TAGS'])
+      {
+        foreach (explode(',', $entry['TAGS']) as $category)
+        {
+          $cat = new Op2DiaryCategory();
+          $cat->name = $category;
+          $cat->Op2Member = $diary->Op2Member;
+
+          $diary->Op2DiaryCategory[] = $cat;
+        }
+      }
+      $diary->save($conn);
+
+      if ($entry['COMMENT'])
+      {
+        $num = 1;
+        foreach ($entry['COMMENT'] as $c)
+        {
+          $comment = new Op2DiaryComment();
+          $comment->setFromArray($c);
+          $comment->number = $num++;
+          $comment->Op2Diary = $diary;
+
+          $comment->save($conn);
+        }
+      }
+    }
   }
 }
 

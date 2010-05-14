@@ -52,41 +52,7 @@ class opMTViewerImportTopicTask extends sfDoctrineBaseTask
         $community->save();
       }
 
-      $parser = new opMTFormatParser($fh);
-      foreach ($parser as $entry)
-      {
-        $this->logSection('import', 'importing '.$entry['TITLE']);
-
-        $isEvent = $this->isEvent($entry);
-        $topic = $isEvent ? new Op2CommunityEvent() : new Op2CommunityTopic();
-        $topic->setFromArray($entry);
-        $topic->Op2Community = $community;
-        $topic->save($conn);
-
-        if ($entry['COMMENT'])
-        {
-          $num = 1;
-          foreach ($entry['COMMENT'] as $idx => $c)
-          {
-            $this->logSection('import', sprintf('comment(%d): %s', $idx, str_replace("\n", ' ', $c['content'])));
-            
-            $comment = $isEvent ? new Op2CommunityEventComment() : new Op2CommunityTopicComment();
-            $comment->setFromArray($c);
-            $comment->number = $num++;
-
-            if ($isEvent)
-            {
-              $comment->Op2CommunityEvent = $topic;
-            }
-            else
-            {
-              $comment->Op2CommunityTopic = $topic;
-            }
-
-            $comment->save($conn);
-          }
-        }
-      }
+      $this->parse($fh, $conn, $community);
 
       $conn->commit();
     }
@@ -97,6 +63,46 @@ class opMTViewerImportTopicTask extends sfDoctrineBaseTask
     }
 
     fclose($fh);
+  }
+
+  protected function parse($file, $conn, $op2Community)
+  {
+    $parser = new opMTFormatParser($file);
+    foreach ($parser as $entry)
+    {
+      $this->logSection('import', 'importing '.$entry['TITLE']);
+
+      $isEvent = $this->isEvent($entry);
+
+      $topic = $isEvent ? new Op2CommunityEvent() : new Op2CommunityTopic();
+      $topic->setFromArray($entry);
+      $topic->Op2Community = $op2Community;
+      $topic->save($conn);
+
+      if ($entry['COMMENT'])
+      {
+        $num = 1;
+        foreach ($entry['COMMENT'] as $idx => $c)
+        {
+          $this->logSection('import', sprintf('comment(%d): %s', $idx, str_replace("\n", ' ', $c['content'])));
+
+          $comment = $isEvent ? new Op2CommunityEventComment() : new Op2CommunityTopicComment();
+          $comment->setFromArray($c);
+          $comment->number = $num++;
+
+          if ($isEvent)
+          {
+            $comment->Op2CommunityEvent = $topic;
+          }
+          else
+          {
+            $comment->Op2CommunityTopic = $topic;
+          }
+
+          $comment->save($conn);
+        }
+      }
+    }
   }
 
   protected function isEvent($entry)
