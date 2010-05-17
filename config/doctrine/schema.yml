@@ -15,7 +15,7 @@ Op2Entry:
   columns:
     id: { type: integer(4), primary: true, autoincrement: true }
     op2_member_id: { type: integer(4), notnull: true }
-    number: { type: intger(4) }
+    number: { type: integer(4) }
     title: { type: string, notnull: true }
     body: { type: string, notnull: true }
     has_images: { type: boolean, notnull: true, default: false }
