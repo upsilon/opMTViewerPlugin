@@ -13,6 +13,7 @@ abstract class PluginOp2Diary extends BaseOp2Diary
 {
   protected function addImage($imageUrl, $idx)
   {
+return;
     $image = new Op2DiaryImage();
     $image->fetchImage($imegeUrl);
     $image->number = $idx;

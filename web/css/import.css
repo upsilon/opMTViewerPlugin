@@ -1,0 +1,4 @@
+div#import_queue ol {
+  list-style-position: inside;
+  list-style-type: decimal;
+}

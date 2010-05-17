@@ -172,3 +172,17 @@ Op2CommunityEventMember:
     Op2CommunityEvent:
       onDelete: cascade
 
+ImportJob:
+  columns:
+    id: { type: integer(4), primary: true, autoincrement: true }
+    file_id: { type: integer(4), notnull: true }
+    member_id: { type: integer(4) }
+    community_id: { type: integer(4) }
+  relations:
+    File:
+      onDelete: cascade
+    Member:
+      onDelete: cascade
+    Community:
+      onDelete: cascade
+

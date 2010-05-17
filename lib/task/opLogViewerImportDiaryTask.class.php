@@ -30,6 +30,26 @@ class opMTViewerImportDiaryTask extends sfDoctrineBaseTask
         }
       }
 
+      $jobs = Doctrine::getTable('ImportJob')->getDiaryJobs();
+      foreach ($jobs as $job)
+      {
+        $file = $job->File;
+        $member = $job->Member;
+
+        $this->logSection('import', 'started importing diaries of '.$member->name);
+        $this->logSection('import', 'filename: '.$file->name);
+
+        try
+        {
+          $this->parse($file, $conn, $member);
+        }
+        catch (Exception $e)
+        {
+        }
+
+        $job->delete();
+      }
+
       $conn->commit();
     }
     catch (Exception $e)

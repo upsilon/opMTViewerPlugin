@@ -59,6 +59,18 @@ class opMTViewerPluginFrontendRouteCollection extends sfRouteCollection
         array('id' => '\d+', 'sf_method' => array('get')),
         array('model' => 'Op2CommunityEvent', 'type' => 'object')
       ),
+
+      'mtviewer_import_diary' => new sfRequestRoute(
+        '/mtviewer/import/diary',
+        array('module' => 'mtviewer_diary', 'action' => 'import'),
+        array('sf_method' => array('get', 'post'))
+      ),
+      'mtviewer_import_topic' => new sfDoctrineRoute(
+        '/mtviewer/import/topic/:id',
+        array('module' => 'mtviewer_topic', 'action' => 'import'),
+        array('id' => '\d+', 'sf_method' => array('get', 'post')),
+        array('model' => 'Community', 'type' => 'object')
+      ),
     );
   } 
 }
