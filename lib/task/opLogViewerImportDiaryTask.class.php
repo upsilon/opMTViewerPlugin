@@ -25,7 +25,8 @@ class opMTViewerImportDiaryTask extends sfDoctrineBaseTask
       {
         if ($fh = fopen($options['filename'], 'r'))
         {
-          $this->parse($fh, $conn);
+          $op2MemberId = $this->getMemberIdFromFileName($options['filename']);
+          $this->parse($fh, $conn, null, $op2MemberId);
           fclose($fh);
         }
       }
@@ -39,9 +40,11 @@ class opMTViewerImportDiaryTask extends sfDoctrineBaseTask
         $this->logSection('import', 'started importing diaries of '.$member->name);
         $this->logSection('import', 'filename: '.$file->name);
 
+        $op2MemberId = $this->getMemberIdFromFileName($file->original_filename);
+
         try
         {
-          $this->parse($file, $conn, $member);
+          $this->parse($file, $conn, $member, $op2MemberId);
         }
         catch (Exception $e)
         {
@@ -59,7 +62,19 @@ class opMTViewerImportDiaryTask extends sfDoctrineBaseTask
     }
   }
 
-  protected function parse($file, $conn, Member $member = null)
+  protected function getMemberIdFromFileName($filename)
+  {
+    if (preg_match('/^.+_d_(\d+)_\d+\.txt$/', $filename, $regs))
+    {
+      return $regs[1];
+    }
+    else
+    {
+      return null;
+    }
+  }
+
+  protected function parse($file, $conn, Member $member = null, $op2MemberId = null)
   {
     $parser = new opMTFormatParser($file);
     foreach ($parser as $entry)
@@ -73,6 +88,7 @@ class opMTViewerImportDiaryTask extends sfDoctrineBaseTask
       {
         $diary->Op2Member->Member = $member;
       }
+      $diary->Op2Member->number = $op2MemberId;
 
       if ($entry['TAGS'])
       {

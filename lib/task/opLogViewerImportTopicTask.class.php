@@ -52,7 +52,8 @@ class opMTViewerImportTopicTask extends sfDoctrineBaseTask
         $community->save();
       }
 
-      $this->parse($fh, $conn, $community);
+      $topicId = $this->getTopicIdFromFileName($arguments['filename']);
+      $this->parse($fh, $conn, $community, $topicId);
 
       $conn->commit();
     }
@@ -65,7 +66,19 @@ class opMTViewerImportTopicTask extends sfDoctrineBaseTask
     fclose($fh);
   }
 
-  protected function parse($file, $conn, $op2Community)
+  protected function getTopicIdFromFileName($filename)
+  {
+    if (preg_match('/^.+_t_(\d+)_\d+\.txt$/', $filename, $regs))
+    {
+      return $regs[1];
+    }
+    else
+    {
+      return null;
+    }
+  }
+
+  protected function parse($file, $conn, $op2Community, $topicId = null)
   {
     $parser = new opMTFormatParser($file);
     foreach ($parser as $entry)
@@ -76,7 +89,9 @@ class opMTViewerImportTopicTask extends sfDoctrineBaseTask
 
       $topic = $isEvent ? new Op2CommunityEvent() : new Op2CommunityTopic();
       $topic->setFromArray($entry);
+      $topic->number = $topicId;
       $topic->Op2Community = $op2Community;
+
       $topic->save($conn);
 
       if ($entry['COMMENT'])
