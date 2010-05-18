@@ -13,8 +13,8 @@
  *
  * @package    OpenPNE
  * @subpackage mtviewer
- * @author     Your name here
+ * @author     Kimura Youchi <kim.upsilon@gmail.com>
  */
-class mtviewerActions extends opMTViewerPluginMTViewerActions
+class mtviewerActions extends opMTViewerPluginActions
 {
 }
