@@ -84,6 +84,12 @@ class opMTViewerImportDiaryTask extends sfDoctrineBaseTask
       $diary = new Op2Diary();
       $diary->setFromArray($entry);
 
+      if ($diary->getTable()->findSameAs($diary))
+      {
+        $this->logSection('import', 'the diary was already imported, skipping.');
+        continue;
+      }
+
       if (!is_null($member))
       {
         $diary->Op2Member->Member = $member;

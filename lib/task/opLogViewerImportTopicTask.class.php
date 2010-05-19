@@ -85,12 +85,18 @@ class opMTViewerImportTopicTask extends sfDoctrineBaseTask
     {
       $this->logSection('import', 'importing '.$entry['TITLE']);
 
-      $isEvent = $this->isEvent($entry);
+      $iEvent = $this->isEvent($entry);
 
       $topic = $isEvent ? new Op2CommunityEvent() : new Op2CommunityTopic();
       $topic->setFromArray($entry);
       $topic->number = $topicId;
       $topic->Op2Community = $op2Community;
+
+      if ($topic->getTable()->findSameAs($topic))
+      {
+        $this->logSection('import', 'the topic was already imported, skipping.');
+        continue;
+      }
 
       $topic->save($conn);
 
