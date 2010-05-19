@@ -8,8 +8,8 @@ class opMTViewerImportDiaryTask extends sfDoctrineBaseTask
     $this->name = 'import-diary';
     $this->briefDescription = 'Import diaries from a Movable Type (MT) format file';
 
-    $this->addOptions(array(
-      new sfCommandOption('filename', null, sfCommandOption::PARAMETER_REQUIRED),
+    $this->addArguments(array(
+      new sfCommandArgument('filename', sfCommandArgument::OPTIONAL | sfCommandArgument::IS_ARRAY),
     ));
   }
 
@@ -21,11 +21,13 @@ class opMTViewerImportDiaryTask extends sfDoctrineBaseTask
     $conn->beginTransaction();
     try
     {
-      if (isset($options['filename']))
+      foreach ($arguments['filename'] as $filename)
       {
-        if ($fh = fopen($options['filename'], 'r'))
+        $this->logSection('import', 'filename: '.$filename);
+
+        if ($fh = fopen($filename, 'r'))
         {
-          $op2MemberId = $this->getMemberIdFromFileName($options['filename']);
+          $op2MemberId = $this->getMemberIdFromFileName($filename);
           $this->parse($fh, $conn, null, $op2MemberId);
           fclose($fh);
         }
