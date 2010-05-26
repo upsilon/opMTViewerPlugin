@@ -27,15 +27,15 @@ abstract class opMTViewerPluginDiaryActions extends opMTViewerPluginBaseActions
 
   public function executeImport(sfWebRequest $request)
   {
-    $this->form = new ImportJobForm();
+    $this->form = new ImportDiaryJobForm();
     if ($request->isMethod(sfWebRequest::POST))
     {
-      if ($this->form->bindAndSave($request['import_job'], $request->getFiles('import_job')))
+      if ($this->form->bindAndSave($request['import_diary_job'], $request->getFiles('import_diary_job')))
       {
         $this->getUser()->setFlash('notice', '日記取り込みの予約が完了しました');
       }
     }
 
-    $this->queue = Doctrine::getTable('ImportJob')->getList();
+    $this->queue = Doctrine::getTable('ImportDiaryJob')->findAll();
   }
 }

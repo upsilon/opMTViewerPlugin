@@ -6,7 +6,7 @@ Op2Member:
     id: { type: integer(4), primary: true, autoincrement: true }
     member_id: { type: integer(4) }
     number: { type: integer(4) }
-    name: { type: string, notnull: true }
+    name: { type: string }
   relations:
     Member:
       onDelete: set null
@@ -176,13 +176,31 @@ ImportJob:
   columns:
     id: { type: integer(4), primary: true, autoincrement: true }
     file_id: { type: integer(4), notnull: true }
-    member_id: { type: integer(4) }
-    community_id: { type: integer(4) }
   relations:
     File:
       onDelete: cascade
-    Member:
+
+ImportDiaryJob:
+  inheritance:
+    type: column_aggregation
+    extends: ImportJob
+    keyField: type
+    keyValue: 1
+  columns:
+    op2_member_id: { type: integer(4) }
+  relations:
+    Op2Member:
       onDelete: cascade
-    Community:
+
+ImportTopicJob:
+  inheritance:
+    type: column_aggregation
+    extends: ImportJob
+    keyField: type
+    keyValue: 2
+  columns:
+    op2_community_id: { type: integer(4) }
+  relations:
+    Op2Community:
       onDelete: cascade
 

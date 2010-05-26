@@ -27,26 +27,28 @@ class opMTViewerImportDiaryTask extends sfDoctrineBaseTask
 
         if ($fh = fopen($filename, 'r'))
         {
-          $op2MemberId = $this->getMemberIdFromFileName($filename);
-          $this->parse($fh, $conn, null, $op2MemberId);
+          $op2Member = new Op2Member();
+          $op2Member->number = $this->getMemberIdFromFileName($filename);
+
+          $this->parse($fh, $conn, $op2Member);
           fclose($fh);
         }
       }
 
-      $jobs = Doctrine::getTable('ImportJob')->getDiaryJobs();
+      $jobs = Doctrine::getTable('ImportDiaryJob')->findAll();
       foreach ($jobs as $job)
       {
         $file = $job->File;
-        $member = $job->Member;
+        $op2Member = $job->Op2Member;
 
-        $this->logSection('import', 'started importing diaries of '.$member->name);
+        $this->logSection('import', 'started importing diaries of '.$op2Member->Member->name);
         $this->logSection('import', 'filename: '.$file->name);
 
-        $op2MemberId = $this->getMemberIdFromFileName($file->original_filename);
+        $op2Member->number = $this->getMemberIdFromFileName($file->original_filename);
 
         try
         {
-          $this->parse($file, $conn, $member, $op2MemberId);
+          $this->parse($file, $conn, $op2Member);
         }
         catch (Exception $e)
         {
@@ -76,7 +78,7 @@ class opMTViewerImportDiaryTask extends sfDoctrineBaseTask
     }
   }
 
-  protected function parse($file, $conn, Member $member = null, $op2MemberId = null)
+  protected function parse($file, $conn, Op2Member $op2Member = null)
   {
     $parser = new opMTFormatParser($file);
     foreach ($parser as $entry)
@@ -92,11 +94,11 @@ class opMTViewerImportDiaryTask extends sfDoctrineBaseTask
         continue;
       }
 
-      if (!is_null($member))
+      if (!is_null($op2Member))
       {
-        $diary->Op2Member->Member = $member;
+        $op2Member->name = $diary->Op2Member->name;
+        $diary->Op2Member = $op2Member;
       }
-      $diary->Op2Member->number = $op2MemberId;
 
       if ($entry['TAGS'])
       {

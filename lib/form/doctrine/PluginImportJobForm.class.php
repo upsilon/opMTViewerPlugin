@@ -21,17 +21,14 @@ abstract class PluginImportJobForm extends BaseImportJobForm
     $this->useFields(array('file_id'));
   }
 
-  public function doSave()
+  protected function doSave($conn = null)
   {
     $file = new File();
     $file->setFromValidatedFile($this->getValue('file_id'));
     $file->name = 'op_mtviewer_'.$this->getObject()->id.'_'.$file->name;
 
-    $memberId = sfContext::getInstance()->getUser()->getMemberId();
-
     $this->getObject()->File = $file;
-    $this->getObject()->member_id = $memberId;
 
-    parent::doSave();
+    parent::doSave($conn);
   }
 }
