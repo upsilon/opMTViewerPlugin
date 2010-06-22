@@ -11,9 +11,12 @@
  */
 abstract class PluginOp2Image extends BaseOp2Image
 {
-  public function fetchImage($imageUrl)
+  public function fetchImage($imageUrl = null)
   {
-    $this->orig_url = $imageUrl;
+    if (!is_null($imageUrl))
+    {
+      $this->orig_url = $imageUrl;
+    }
 
     $tmppath = tempnam(sys_get_temp_dir(), 'IMG');
     $fh = fopen($tmppath, 'w');
