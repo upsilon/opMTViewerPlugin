@@ -89,4 +89,9 @@ abstract class PluginOp2Entry extends BaseOp2Entry
 
     return $result;
   }
+
+  public function getBody()
+  {
+    return opTagConverter::convertTag($this->_get('body'));
+  }
 }
