@@ -1,0 +1,10 @@
+Gadget:
+  mtviewer_diary_list:
+    type: "contents"
+    name: "mtviewerDiaryList"
+    sort_order: 101
+
+  mtviewer_diary_profile_list:
+    type: "profileContents"
+    name: "mtviewerDiaryList"
+    sort_order: 101
