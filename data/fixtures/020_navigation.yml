@@ -1,4 +1,12 @@
 Navigation:
+  secure_global_navigation_mtviewer:
+    type: "secure_global"
+    uri: "@mtviewer_top"
+    sort_order: 45
+    Translation:
+      ja_JP:
+        caption: "過去ログ"
+
   community_navigation_mttopic:
     type: "community"
     uri: "@mtviewer_community_topic"
