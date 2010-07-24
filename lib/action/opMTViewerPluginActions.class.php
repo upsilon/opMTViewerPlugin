@@ -17,5 +17,16 @@ abstract class opMTViewerPluginActions extends opMTViewerPluginBaseActions
       default:
         break;
     }
+
+    $this->queue = Doctrine::getTable('ImportJob')->findAll();
+
+    $this->form = new opImportForm();
+    if ($request->isMethod(sfWebRequest::POST))
+    {
+      if ($this->form->bindAndSave($request['import_job'], $request->getFiles('import_job')))
+      {
+        $this->getUser()->setFlash('notice', '日記取り込みの予約が完了しました');
+      }
+    }
   }
 }
