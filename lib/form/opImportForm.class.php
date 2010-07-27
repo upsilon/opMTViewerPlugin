@@ -28,6 +28,9 @@ class opImportForm extends ImportJobForm
 
     $form = new opCommunitySelectForm();
     $this->embedForm('op2_community', $form);
+
+    $this->widgetSchema->setLabel('op2_community', 'コミュニティ');
+    $this->widgetSchema->setHelp('op2_community', 'トピックまたはイベント取り込みの場合のみ指定してください');
   }
 
   public function doSave($conn = null)

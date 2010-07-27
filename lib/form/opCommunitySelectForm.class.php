@@ -10,12 +10,15 @@ class opCommunitySelectForm extends Op2CommunityForm
         'add_empty' => true,
       )),
     ));
+
     $this->setValidators(array(
       'id' => new opValidatorDoctrineChoiceInput(array(
         'model' => 'Op2Community',
         'required' => false,
       )),
     ));
+
+    $this->widgetSchema->setLabel('id', 'コミュニティ名');
   }
 
   public function doUpdateObject($values)
