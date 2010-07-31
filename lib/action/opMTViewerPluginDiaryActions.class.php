@@ -25,6 +25,22 @@ abstract class opMTViewerPluginDiaryActions extends opMTViewerPluginBaseActions
   {
   }
 
+  public function executeEdit(sfWebRequest $request)
+  {
+    $this->form = new Op2DiaryForm($this->op2Diary);
+  }
+
+  public function executeUpdate(sfWebRequest $request)
+  {
+    $this->form = new Op2DiaryForm($this->op2Diary);
+    if ($this->form->bindAndSave($request['op2_diary']))
+    {
+      $this->getUser()->setFlash('notice', '編集しました');
+      $this->redirect('@mtviewer_diary?id='.$this->diary->id);
+    }
+    $this->setTemplate('edit');
+  }
+
   public function executeImport(sfWebRequest $request)
   {
     $this->form = new ImportDiaryJobForm();

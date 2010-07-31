@@ -21,4 +21,20 @@ abstract class opMTViewerPluginTopicActions extends opMTViewerPluginBaseActions
   public function executeShow(sfWebRequest $request)
   {
   }
+
+  public function executeEdit(sfWebRequest $request)
+  {
+    $this->form = new Op2CommunityTopicForm($this->op2Topic);
+  }
+
+  public function executeUpdate(sfWebRequest $request)
+  {
+    $this->form = new Op2CommunityTopicForm($this->op2Topic);
+    if ($this->form->bindAndSave($request['op2_commuity_topic']))
+    {
+      $this->getUser()->setFlash('notice', '編集しました');
+      $this->redirect('@mtviewer_topic?id='.$this->topic->id);
+    }
+    $this->setTemplate('edit');
+  }
 }

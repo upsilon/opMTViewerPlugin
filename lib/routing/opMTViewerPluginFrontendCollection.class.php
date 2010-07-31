@@ -11,12 +11,14 @@ class opMTViewerPluginFrontendRouteCollection extends sfRouteCollection
         '/mtviewer',
         array('module' => 'mtviewer', 'action' => 'index')
       ),
+
       'mtviewer_member_list' => new sfDoctrineRoute(
         '/mtviewer/member',
         array('module' => 'mtviewer_member', 'action' => 'list'),
         array('sf_method' => array('get')),
         array('model' => 'Op2Member', 'type' => 'list')
       ),
+
       'mtviewer_member_diary' => new sfDoctrineRoute(
         '/mtviewer/member/:id/diary',
         array('module' => 'mtviewer_diary', 'action' => 'list'),
@@ -29,12 +31,26 @@ class opMTViewerPluginFrontendRouteCollection extends sfRouteCollection
         array('id' => '\d+', 'sf_method' => array('get')),
         array('model' => 'Op2Diary', 'type' => 'object')
       ),
+      'mtviewer_diary_edit' => new sfDoctrineRoute(
+        '/mtviewer/diary/edit/:id',
+        array('module' => 'mtviewer_diary', 'action' => 'edit'),
+        array('id' => '\d+', 'sf_method' => array('get')),
+        array('model' => 'Op2Diary', 'type' => 'object')
+      ),
+      'mtviewer_diary_update' => new sfDoctrineRoute(
+        '/mtviewer/diary/edit/:id',
+        array('module' => 'mtviewer_diary', 'action' => 'update'),
+        array('id' => '\d+', 'sf_method' => array('post')),
+        array('model' => 'Op2Diary', 'type' => 'object')
+      ),
+
       'mtviewer_community_list' => new sfDoctrineRoute(
         '/mtviewer/community',
         array('module' => 'mtviewer_community', 'action' => 'list'),
         array('sf_method' => array('get')),
         array('model' => 'Op2Community', 'type' => 'list')
       ),
+
       'mtviewer_community_topic' => new sfDoctrineRoute(
         '/mtviewer/community/:id/topic',
         array('module' => 'mtviewer_topic', 'action' => 'list'),
@@ -47,6 +63,19 @@ class opMTViewerPluginFrontendRouteCollection extends sfRouteCollection
         array('id' => '\d+', 'sf_method' => array('get')),
         array('model' => 'Op2CommunityTopic', 'type' => 'object')
       ),
+      'mtviewer_topic_edit' => new sfDoctrineRoute(
+        '/mtviewer/topic/edit/:id',
+        array('module' => 'mtviewer_topic', 'action' => 'edit'),
+        array('id' => '\d+', 'sf_method' => array('get')),
+        array('model' => 'Op2CommunityTopic', 'type' => 'object')
+      ),
+      'mtviewer_topic_update' => new sfDoctrineRoute(
+        '/mtviewer/topic/edit/:id',
+        array('module' => 'mtviewer_topic', 'action' => 'update'),
+        array('id' => '\d+', 'sf_method' => array('post')),
+        array('model' => 'Op2CommunityTopic', 'type' => 'object')
+      ),
+
       'mtviewer_community_event' => new sfDoctrineRoute(
         '/mtviewer/community/:id/event',
         array('module' => 'mtviewer_event', 'action' => 'list'),
@@ -57,6 +86,18 @@ class opMTViewerPluginFrontendRouteCollection extends sfRouteCollection
         '/mtviewer/event/show/:id',
         array('module' => 'mtviewer_event', 'action' => 'show'),
         array('id' => '\d+', 'sf_method' => array('get')),
+        array('model' => 'Op2CommunityEvent', 'type' => 'object')
+      ),
+      'mtviewer_event_edit' => new sfDoctrineRoute(
+        '/mtviewer/event/edit/:id',
+        array('module' => 'mtviewer_event', 'action' => 'edit'),
+        array('id' => '\d+', 'sf_method' => array('get')),
+        array('model' => 'Op2CommunityEvent', 'type' => 'object')
+      ),
+      'mtviewer_event_update' => new sfDoctrineRoute(
+        '/mtviewer/event/edit/:id',
+        array('module' => 'mtviewer_event', 'action' => 'update'),
+        array('id' => '\d+', 'sf_method' => array('post')),
         array('model' => 'Op2CommunityEvent', 'type' => 'object')
       ),
 

@@ -21,4 +21,20 @@ abstract class opMTViewerPluginEventActions extends opMTViewerPluginBaseActions
   public function executeShow(sfWebRequest $request)
   {
   }
+
+  public function executeEdit(sfWebRequest $request)
+  {
+    $this->form = new Op2CommunityEventForm($this->op2Event);
+  }
+
+  public function executeUpdate(sfWebRequest $request)
+  {
+    $this->form = new Op2CommunityEventForm($this->op2Event);
+    if ($this->form->bindAndSave($request['op2_commuity_event']))
+    {
+      $this->getUser()->setFlash('notice', '編集しました');
+      $this->redirect('@mtviewer_event?id='.$this->event->id);
+    }
+    $this->setTemplate('edit');
+  }
 }
