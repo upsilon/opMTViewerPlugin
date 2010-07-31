@@ -24,12 +24,12 @@ abstract class opMTViewerPluginTopicActions extends opMTViewerPluginBaseActions
 
   public function executeEdit(sfWebRequest $request)
   {
-    $this->form = new Op2CommunityTopicForm($this->op2Topic);
+    $this->form = new Op2CommunityTopicForm($this->topic);
   }
 
   public function executeUpdate(sfWebRequest $request)
   {
-    $this->form = new Op2CommunityTopicForm($this->op2Topic);
+    $this->form = new Op2CommunityTopicForm($this->topic);
     if ($this->form->bindAndSave($request['op2_commuity_topic']))
     {
       $this->getUser()->setFlash('notice', '編集しました');

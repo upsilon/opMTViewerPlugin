@@ -24,12 +24,12 @@ abstract class opMTViewerPluginEventActions extends opMTViewerPluginBaseActions
 
   public function executeEdit(sfWebRequest $request)
   {
-    $this->form = new Op2CommunityEventForm($this->op2Event);
+    $this->form = new Op2CommunityEventForm($this->event);
   }
 
   public function executeUpdate(sfWebRequest $request)
   {
-    $this->form = new Op2CommunityEventForm($this->op2Event);
+    $this->form = new Op2CommunityEventForm($this->event);
     if ($this->form->bindAndSave($request['op2_commuity_event']))
     {
       $this->getUser()->setFlash('notice', '編集しました');
