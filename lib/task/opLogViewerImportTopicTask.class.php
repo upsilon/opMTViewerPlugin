@@ -128,7 +128,7 @@ class opMTViewerImportTopicTask extends sfDoctrineBaseTask
 
   protected function isEvent($entry)
   {
-    return preg_match('/^<p> +開催日時 : /', $entry['BODY']);
+    return preg_match('/<p> +開催日時 : /', $entry['BODY']);
   }
 }
 
